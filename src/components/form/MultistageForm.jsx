@@ -9,9 +9,14 @@ import DropdownSelect from "./DropdownSelect";
 import Form from "./Form";
 import { useForm } from "react-hook-form";
 import FormSubmit from "./FormSubmit";
+import PhotoUpload from "./PhotoUpload";
+import { useDispatch } from "react-redux";
+import { addProductInfo } from "../../redux/features/productSlice";
+import Review from "../ui/Review";
 
 const MultistageForm = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const dispatch = useDispatch();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -26,7 +31,7 @@ const MultistageForm = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    dispatch(addProductInfo(data));
     reset();
     handleNext();
   };
@@ -43,22 +48,27 @@ const MultistageForm = () => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Stepper activeStep={activeStep}>
+      <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((step) => {
-          const labelProps = {};
-
           return (
             <Step key={step.label}>
-              <StepLabel {...labelProps}>{step.label}</StepLabel>
+              <StepLabel>
+                <Box>
+                  <Typography component="h3" variant="h6">
+                    {step.label}
+                  </Typography>
+                  <Typography component="p" fontSize="14px">
+                    {step.description}
+                  </Typography>
+                </Box>
+              </StepLabel>
             </Step>
           );
         })}
       </Stepper>
 
       {activeStep === steps.length ? (
-        <>
-          <Typography sx={{ mt: 2, mb: 1 }}>Review Text</Typography>
-        </>
+        <></>
       ) : (
         <>
           <Box sx={{ mt: 2, mb: 1 }}>
@@ -102,6 +112,7 @@ const MultistageForm = () => {
                   type="number"
                   errors={errors}
                 />
+
                 <Input
                   register={register("extraPrice", {
                     required: "Extra Price is required",
@@ -113,10 +124,10 @@ const MultistageForm = () => {
                 />
 
                 <Input
-                  register={register("textAmount", {
+                  register={register("taxAmount", {
                     required: "Tax amount is required",
                   })}
-                  name="textAmount"
+                  name="taxAmount"
                   label="Tax amount"
                   type="number"
                   errors={errors}
@@ -181,8 +192,16 @@ const MultistageForm = () => {
                 <FormSubmit activeStep={activeStep} steps={steps} />
               </Form>
             )}
-            {activeStep === 2 && <Box>photo</Box>}
-            {activeStep === 3 && <Typography>Review</Typography>}
+            {activeStep === 2 && (
+              <Box>
+                <PhotoUpload
+                  activeStep={activeStep}
+                  steps={steps}
+                  handleNext={handleNext}
+                />
+              </Box>
+            )}
+            {activeStep === 3 && <Review />}
           </Box>
         </>
       )}

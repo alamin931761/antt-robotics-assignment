@@ -6,7 +6,9 @@ const Input = ({
   multiline = false,
   type = "text",
   register,
-  errors,
+  errors = "",
+  inputValue,
+  disabled = false,
 }) => {
   return (
     <Box>
@@ -18,6 +20,8 @@ const Input = ({
         multiline={multiline}
         type={type}
         {...register}
+        value={inputValue}
+        disabled={disabled}
       />
 
       {/* Display error message if there's a validation error */}
