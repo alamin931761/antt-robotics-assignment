@@ -101,7 +101,11 @@ const PhotoUpload = ({ steps, activeStep, handleNext }) => {
         <Box sx={{ flex: "1 1 auto" }} />
 
         {/* Button to either submit the form or move to the next step */}
-        <Button onClick={handleNextButton} disabled={files.length === 0}>
+        <Button
+          variant="outlined"
+          onClick={handleNextButton}
+          disabled={files.length === 0}
+        >
           {/* Conditionally render button text based on the current step */}
           {activeStep === steps.length - 1 ? "Submit" : "Next"}
         </Button>

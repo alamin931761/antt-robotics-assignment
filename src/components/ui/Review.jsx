@@ -81,7 +81,12 @@ const Review = () => {
           {/* Spacer to push the button to the end of the flex container */}
           <Box sx={{ flex: "1 1 auto" }} />
 
-          <Button component={Link} to="/manage-product">
+          <Button
+            variant="outlined"
+            component={Link}
+            to="/manage-product"
+            sx={{ textTransform: "capitalize" }}
+          >
             Manage Product
           </Button>
         </Box>

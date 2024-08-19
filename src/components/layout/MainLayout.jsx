@@ -12,10 +12,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
-import { Typography } from "@mui/material";
-
 const drawerWidth = 240;
 
+// Styled component for the main content area
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
@@ -35,6 +34,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   })
 );
 
+// Styled component for the drawer header
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -45,26 +45,31 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const MainLayout = () => {
+  // State to manage drawer open/close status
   const [open, setOpen] = useState(false);
 
+  // Function to open the drawer
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
+  // Function to close the drawer
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
-  // Navigation items
+  // Navigation items for the drawer
   const navItems = [
-    { label: "Dashboard", path: "/dashboard" },
     { label: "Add Product", path: "/add-product" },
     { label: "Manage Product", path: "/manage-product" },
   ];
 
   return (
     <Box sx={{ display: "flex" }}>
+      {/* Baseline CSS reset */}
       <CssBaseline />
+
+      {/* Button to open the drawer */}
       <IconButton
         color="inherit"
         aria-label="open drawer"
@@ -80,6 +85,7 @@ const MainLayout = () => {
         <MenuIcon />
       </IconButton>
 
+      {/* Drawer component for navigation */}
       <Drawer
         sx={{
           width: drawerWidth,
@@ -93,31 +99,30 @@ const MainLayout = () => {
         anchor="left"
         open={open}
       >
+        {/* Drawer header with close button */}
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
         </DrawerHeader>
         <Divider />
+
+        {/* List of navigation items */}
         <List>
           {navItems.map((item) => (
             <ListItem key={item.label} disablePadding>
-              <ListItemButton sx={{ textAlign: "center" }}>
-                <Typography
-                  component={Link}
-                  to={item.path}
-                  sx={{ textDecoration: "none", color: "black" }}
-                >
-                  <ListItemText primary={item.label} />
-                </Typography>
+              <ListItemButton component={Link} to={item.path}>
+                <ListItemText primary={item.label} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
 
+      {/* Main content area */}
       <Main open={open}>
         <DrawerHeader />
+
         <Outlet />
       </Main>
     </Box>
